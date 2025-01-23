@@ -116,7 +116,10 @@ inline void MyList<T>::insert_at(T value, size_t index)
 		throw std::out_of_range("Вы вышли за границы массива");
 
 	if (index == numElements)
+	{
 		push_back(value);
+		return;
+	}
 
 	Node<T>* currentNode = firstNode;
 
