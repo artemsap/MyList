@@ -19,6 +19,7 @@ private:
 private:
     size_t numElements;
     Node<T>* firstNode;
+	Node<T>* lastNode;
 
 private:
 	inline Node<T>* GetPtrAt(size_t index)
@@ -37,7 +38,7 @@ private:
 	}
 
 public:
-    MyList() : numElements(0), firstNode(nullptr) {}
+    MyList() : numElements(0), firstNode(nullptr), lastNode(nullptr) {}
 
     ~MyList()
     {
@@ -88,6 +89,8 @@ void MyList<T>::pop_back()
 	delete node_before_last->pNext;
 	node_before_last->pNext = nullptr;
 
+	lastNode = node_before_last;
+
 	numElements--;
 }
 
@@ -105,11 +108,12 @@ void MyList<T>::push_back(T value)
 	if (firstNode == nullptr)
 	{
 		firstNode = new Node(value);
+		lastNode = firstNode;
 	}
 	else
 	{
-		Node<T>* lastNode = GetPtrAt(numElements - 1);
 		lastNode->pNext = new Node(value);
+		lastNode = lastNode->pNext;
 	}
 
 	numElements++;
