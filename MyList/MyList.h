@@ -80,11 +80,23 @@ void MyList<T>::pop_front()
 	firstNode = newFirstNode;
 
 	numElements--;
+
+	if (numElements == 0)
+	{
+		lastNode = nullptr;
+		firstNode = nullptr;
+	}
 }
 
 template<typename T>
 void MyList<T>::pop_back()
 {
+	if (numElements == 1)
+	{
+		pop_front();
+		return;
+	}
+
 	Node<T>* node_before_last = GetPtrAt(numElements - 2);
 	delete node_before_last->pNext;
 	node_before_last->pNext = nullptr;
@@ -92,12 +104,26 @@ void MyList<T>::pop_back()
 	lastNode = node_before_last;
 
 	numElements--;
+
+	if (numElements == 0)
+	{
+		lastNode = nullptr;
+		firstNode = nullptr;
+	}
 }
 
 template<typename T>
 void MyList<T>::push_front(T value)
 {
-	firstNode = new Node<T>(value, firstNode);
+	if (firstNode == nullptr)
+	{
+		firstNode = new Node<T>(value);
+		lastNode = firstNode;
+	}
+	else
+	{
+		firstNode = new Node<T>(value, firstNode);
+	}
 
 	numElements++;
 }
