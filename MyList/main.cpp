@@ -10,42 +10,20 @@ int main()
     {
         kek.push_back(i);
     }
-
-    for (size_t i = 0; i < kek.get_size(); i++)
-    {
-        std::cout << kek[i] << ' ';
-    }
-    std::cout << std::endl;
+    kek.PrintList();
 
     kek.pop_back();
-
-    for (size_t i = 0; i < kek.get_size(); i++)
-    {
-        std::cout << kek[i] << ' ';
-    }
-    std::cout << std::endl;
+    kek.PrintList();
 
     kek.push_front(10);
-
-    for (size_t i = 0; i < kek.get_size(); i++)
-    {
-        std::cout << kek[i] << ' ';
-    }
-    std::cout << std::endl;
+    kek.PrintList();
 
     kek.remove_at(3);
-
-    for (size_t i = 0; i < kek.get_size(); i++)
-    {
-        std::cout << kek[i] << ' ';
-    }
-    std::cout << std::endl;
+    kek.PrintList();
 
     kek.insert_at(5, 3);
+    kek.PrintList();
 
-    for (size_t i = 0; i < kek.get_size(); i++)
-    {
-        std::cout << kek[i] << ' ';
-    }
-    std::cout << std::endl;
+    kek.pop_front();
+    kek.PrintList();
 }

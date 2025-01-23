@@ -39,6 +39,8 @@ public:
 	void insert_at(T value, size_t index);
 	void remove_at(size_t index);
 
+	void PrintList();
+
     size_t get_size();
 
     T& operator[](const size_t index);
@@ -153,6 +155,16 @@ inline void MyList<T>::remove_at(size_t index)
 	currentNode->pNext = saved_pNext;
 
 	numElements--;
+}
+
+template<typename T>
+inline void MyList<T>::PrintList()
+{
+	for (size_t i = 0; i < get_size(); i++)
+	{
+		std::cout << this->operator[](i) << ' ';
+	}
+	std::cout << std::endl;
 }
 
 template<typename T>
