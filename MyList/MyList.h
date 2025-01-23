@@ -133,7 +133,7 @@ inline void MyList<T>::insert_at(T value, size_t index)
 
 template<typename T>
 inline void MyList<T>::remove_at(size_t index)
-{{}
+{
 	Node<T>* node_before_deleted = GetPtrAt(index - 1);
 
 	Node<T>* saved_pNext = node_before_deleted->pNext->pNext;
