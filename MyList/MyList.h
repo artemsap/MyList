@@ -20,6 +20,22 @@ private:
     size_t numElements;
     Node<T>* firstNode;
 
+private:
+	inline Node<T>* GetPtrAt(size_t index)
+	{
+		if (index >= numElements)
+			throw std::out_of_range("Вы вышли за границы массива");
+
+		Node<T>* currentNode = firstNode;
+
+		for (size_t i = 0; i < index; i++)
+		{
+			currentNode = currentNode->pNext;
+		}
+
+		return currentNode;
+	}
+
 public:
     MyList() : numElements(0), firstNode(nullptr) {}
 
@@ -68,15 +84,9 @@ void MyList<T>::pop_front()
 template<typename T>
 void MyList<T>::pop_back()
 {
-	Node<T>* currentNode = firstNode;
-
-	while (currentNode->pNext->pNext != nullptr)
-	{
-		currentNode = currentNode->pNext;
-	}
-
-	delete currentNode->pNext;
-	currentNode->pNext = nullptr;
+	Node<T>* node_before_last = GetPtrAt(numElements - 2);
+	delete node_before_last->pNext;
+	node_before_last->pNext = nullptr;
 
 	numElements--;
 }
@@ -98,14 +108,8 @@ void MyList<T>::push_back(T value)
 	}
 	else
 	{
-		Node<T>* currentNode = firstNode;
-
-		while (currentNode->pNext != nullptr)
-		{
-			currentNode = currentNode->pNext;
-		}
-
-		currentNode->pNext = new Node(value);
+		Node<T>* lastNode = GetPtrAt(numElements - 1);
+		lastNode->pNext = new Node(value);
 	}
 
 	numElements++;
@@ -114,45 +118,27 @@ void MyList<T>::push_back(T value)
 template<typename T>
 inline void MyList<T>::insert_at(T value, size_t index)
 {
-	if (index > numElements)
-		throw std::out_of_range("Вы вышли за границы массива");
-
 	if (index == numElements)
 	{
 		push_back(value);
 		return;
 	}
 
-	Node<T>* currentNode = firstNode;
-
-	for (size_t i = 0; i < index - 1; i++)
-	{
-		currentNode = currentNode->pNext;
-	}
-
-	Node<T>* newValue = new Node<T>(value);
-	newValue->pNext = currentNode->pNext;
-	currentNode->pNext = newValue;
+	Node<T>* node_before_index = GetPtrAt(index - 1);
+	Node<T>* newValue = new Node<T>(value, node_before_index->pNext);
+	node_before_index->pNext = newValue;
 
 	numElements++;
 }
 
 template<typename T>
 inline void MyList<T>::remove_at(size_t index)
-{
-	if (index >= numElements)
-		throw std::out_of_range("Вы вышли за границы массива");
+{{}
+	Node<T>* node_before_deleted = GetPtrAt(index - 1);
 
-	Node<T>* currentNode = firstNode;
-
-	for (size_t i = 0; i < index - 1; i++)
-	{
-		currentNode = currentNode->pNext;
-	}
-
-	Node<T>* saved_pNext = currentNode->pNext->pNext;
-	delete currentNode->pNext;
-	currentNode->pNext = saved_pNext;
+	Node<T>* saved_pNext = node_before_deleted->pNext->pNext;
+	delete node_before_deleted->pNext;
+	node_before_deleted->pNext = saved_pNext;
 
 	numElements--;
 }
@@ -176,15 +162,5 @@ inline size_t MyList<T>::get_size()
 template<typename T>
 T& MyList<T>::operator[](const size_t index)
 {
-	if (index >= numElements)
-		throw std::out_of_range("Вы вышли за границы массива");
-
-	Node<T>* currentNode = firstNode;
-
-	for (size_t i = 0; i < index; i++)
-	{
-		currentNode = currentNode->pNext;
-	}
-
-	return currentNode->value;
+	return GetPtrAt(index)->value;
 }
